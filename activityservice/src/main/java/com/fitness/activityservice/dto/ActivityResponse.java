@@ -8,7 +8,7 @@ import java.util.Map;
 @Data
 public class ActivityResponse {
     private String id;
-    private String userId;
+    private Long userId;
     private String activityId;
     private ActivityType type;
     private Integer duration;
