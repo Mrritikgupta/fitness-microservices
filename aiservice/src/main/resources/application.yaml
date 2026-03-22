@@ -7,11 +7,11 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/airecommendationfitness
-      database: airecommendationfitness
+
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: activity-processor-group-v3
+      group-id: activity-processor-group-v6
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -20,6 +20,11 @@ spring:
         spring.json.trusted.packages: "*"
     topic:
       name: activity-events
+
+gemini:
+  api:
+    url: ${GEMINI_URL}
+    key: ${GEMINI_KEY}
 
 eureka:
   client:
