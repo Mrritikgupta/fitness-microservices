@@ -2,8 +2,15 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+    instance:
+      prefer-ip-address: true
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/fitness-app
   cloud:
     gateway:
       server:
@@ -13,6 +20,10 @@ spring:
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/api/users/**
+            - id: activity-service
+              uri: lb://ACTIVITY-SERVICE
+              predicates:
+                - Path=/api/activities,/api/activities/**
 
 server:
   port: 8080
