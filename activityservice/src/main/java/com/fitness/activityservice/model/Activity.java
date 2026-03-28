@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class Activity {
     private String id;
-    private Long userId;
+    private String userId;
     private String activityId;
     private ActivityType type;
     private Integer duration;

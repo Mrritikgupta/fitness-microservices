@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class ActivityService {
     private final UserValidationService userValidationService;
     private final KafkaTemplate<String, Activity> kafkaTemplate;
 
-    @Value("${kafka.topic.name}")
+    @Value("${spring.kafka.topic.name}")
     private String topicName;
 
     public ActivityResponse trackActivity(ActivityRequest request) {
@@ -35,6 +38,8 @@ public class ActivityService {
                 .additionalMetrics(request.getAdditionalMetrics())
                 .build();
         Activity savedActivity = activityRepository.save(activity);
+        savedActivity.setActivityId(savedActivity.getId());
+        savedActivity = activityRepository.save(savedActivity);
 
         try{
         kafkaTemplate.send(topicName,String.valueOf(savedActivity.getUserId()),savedActivity);
@@ -51,6 +56,7 @@ public class ActivityService {
         response.setId(activity.getId());
         response.setUserId(activity.getUserId());
         response.setType(activity.getType());
+        response.setActivityId(activity.getActivityId());
         response.setDuration(activity.getDuration());
         response.setCaloriesBurned(activity.getCaloriesBurned());
         response.setStartTime(activity.getStartTime());
@@ -62,5 +68,11 @@ public class ActivityService {
     }
 
 
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activityList= activityRepository.findByUserId(userId);
+        return activityList.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
 
+    }
 }

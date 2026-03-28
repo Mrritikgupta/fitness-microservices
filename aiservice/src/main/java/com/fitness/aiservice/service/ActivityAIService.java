@@ -58,7 +58,7 @@ public class ActivityAIService {
             List<String> safety= extractSafetyGuidelines(analysisJson.path("safety"));
             
  return Recommendation.builder()
-         .activityId(activity.getId())
+         .activityId(activity.getActivityId())
          .userId(activity.getUserId())
          .type(activity.getType().toString())
          .recommendation(fullAnalysis.toString().trim())
@@ -80,7 +80,7 @@ public class ActivityAIService {
 
     private Recommendation createDefaultRecommendation(Activity activity) {
         return Recommendation.builder()
-                .activityId(activity.getId())
+                .activityId(activity.getActivityId())
                 .userId(activity.getUserId())
                 .type(activity.getType().toString())
                 .recommendation("Unable to generate detailed analysis")

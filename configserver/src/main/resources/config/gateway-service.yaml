@@ -20,10 +20,20 @@ spring:
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/api/users/**
+              filters:
+                - StripPrefix=1
             - id: activity-service
               uri: lb://ACTIVITY-SERVICE
               predicates:
                 - Path=/api/activities,/api/activities/**
+              filters:
+                - StripPrefix=1
+            - id: ai-service
+              uri: lb://AI-SERVICE
+              predicates:
+                - Path=/api/recommendations/**
+              filters:
+                - StripPrefix=1
 
 server:
   port: 8080
